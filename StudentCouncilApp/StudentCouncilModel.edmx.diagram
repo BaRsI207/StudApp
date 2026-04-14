@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f5ae5651c72e4ccdbdbd612fe4aa7979" Name="Diagram1">
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Direction" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Document" Width="1.5" PointX="7.5" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.EventPhoto" Width="1.5" PointX="7.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Event" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.ExternalOrganization" Width="1.5" PointX="5.25" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Group" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.OrganizationParticipation" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.ParticipationRequest" Width="1.5" PointX="7.5" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Role" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Speciality" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.StudentParticipation" Width="1.5" PointX="7.5" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Student" Width="1.5" PointX="5.25" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.StudyPeriod" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Supervisor" Width="1.5" PointX="10.5" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.sysdiagram" Width="1.5" PointX="9.75" PointY="5.375" IsExpanded="true" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Events__Directio__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Superviso__Direc__0A9D95DB" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Documents__Stude__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__EventPhot__Event__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Events__StudyPer__60A75C0F" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Organizat__Event__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Participa__Event__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__StudentPa__Event__6D0D32F4" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Organizat__Organ__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Groups__Speciali__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Students__GroupI__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Participa__Stude__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Students__RoleID__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__StudentPa__Stude__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Superviso__Stude__0B91BA14" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

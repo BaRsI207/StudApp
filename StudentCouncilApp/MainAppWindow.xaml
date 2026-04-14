@@ -1,0 +1,43 @@
+﻿<Window x:Class="StudentCouncilApp.MainAppWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Студенческий совет" 
+        Height="600" Width="900"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхнее меню -->
+        <Border Grid.Row="0" Background="#2C3E50" Padding="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="btnHome" Content="Главная" Width="100" Margin="5" 
+                        Background="Transparent" Foreground="White" FontSize="14"
+                        Cursor="Hand"/>
+                <Button x:Name="btnDirections" Content="Направления" Width="100" Margin="5"
+                        Background="Transparent" Foreground="White" FontSize="14"
+                        Cursor="Hand"/>
+                <Button x:Name="btnEvents" Content="Мероприятия" Width="100" Margin="5"
+                        Background="Transparent" Foreground="White" FontSize="14"
+                        Cursor="Hand"/>
+                <Button x:Name="btnRating" Content="Рейтинг" Width="100" Margin="5"
+                        Background="Transparent" Foreground="White" FontSize="14"
+                        Cursor="Hand"/>
+                <Button x:Name="btnProfile" Content="Профиль" Width="100" Margin="5"
+                        Background="Transparent" Foreground="White" FontSize="14"
+                        Cursor="Hand"/>
+                <Button x:Name="btnLogout" Content="Выход" Width="100" Margin="5"
+                        Background="#E74C3C" Foreground="White" FontSize="14"
+                        Cursor="Hand"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Контентная область - используем ContentControl вместо Border -->
+        <ContentControl x:Name="ContentArea" Grid.Row="1" Background="#F5F5F5" Padding="20">
+            <!-- Содержимое будет меняться динамически -->
+        </ContentControl>
+    </Grid>
+</Window>

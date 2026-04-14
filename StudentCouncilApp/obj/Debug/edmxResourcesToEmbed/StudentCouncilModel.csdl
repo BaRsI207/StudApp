@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StudentCouncilAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Direction">
+    <Key>
+      <PropertyRef Name="DirectionID" />
+    </Key>
+    <Property Name="DirectionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Events" Relationship="Self.FK__Events__Directio__619B8048" FromRole="Directions" ToRole="Events" />
+    <NavigationProperty Name="Supervisors" Relationship="Self.FK__Superviso__Direc__0A9D95DB" FromRole="Directions" ToRole="Supervisors" />
+  </EntityType>
+  <EntityType Name="Document">
+    <Key>
+      <PropertyRef Name="DocumentID" />
+    </Key>
+    <Property Name="DocumentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int32" Nullable="false" />
+    <Property Name="DocumentLink" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UploadDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Student" Relationship="Self.FK__Documents__Stude__787EE5A0" FromRole="Documents" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="EventPhoto">
+    <Key>
+      <PropertyRef Name="PhotoID" />
+    </Key>
+    <Property Name="PhotoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EventID" Type="Int32" Nullable="false" />
+    <Property Name="PhotoLink" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UploadDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Event" Relationship="Self.FK__EventPhot__Event__7C4F7684" FromRole="EventPhotos" ToRole="Events" />
+  </EntityType>
+  <EntityType Name="Event">
+    <Key>
+      <PropertyRef Name="EventID" />
+    </Key>
+    <Property Name="EventID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudyPeriodID" Type="Int32" Nullable="false" />
+    <Property Name="DirectionID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EventDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EventTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="Place" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ExpectedStudentsAmount" Type="Int32" />
+    <Property Name="ActualStudentsAmount" Type="Int32" />
+    <Property Name="Scores" Type="Int32" />
+    <NavigationProperty Name="Direction" Relationship="Self.FK__Events__Directio__619B8048" FromRole="Events" ToRole="Directions" />
+    <NavigationProperty Name="EventPhotos" Relationship="Self.FK__EventPhot__Event__7C4F7684" FromRole="Events" ToRole="EventPhotos" />
+    <NavigationProperty Name="StudyPeriod" Relationship="Self.FK__Events__StudyPer__60A75C0F" FromRole="Events" ToRole="StudyPeriods" />
+    <NavigationProperty Name="OrganizationParticipations" Relationship="Self.FK__Organizat__Event__75A278F5" FromRole="Events" ToRole="OrganizationParticipation" />
+    <NavigationProperty Name="ParticipationRequests" Relationship="Self.FK__Participa__Event__68487DD7" FromRole="Events" ToRole="ParticipationRequests" />
+    <NavigationProperty Name="StudentParticipations" Relationship="Self.FK__StudentPa__Event__6D0D32F4" FromRole="Events" ToRole="StudentParticipation" />
+  </EntityType>
+  <EntityType Name="ExternalOrganization">
+    <Key>
+      <PropertyRef Name="OrganizationID" />
+    </Key>
+    <Property Name="OrganizationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="RepresentativeFullName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="OrganizationParticipations" Relationship="Self.FK__Organizat__Organ__74AE54BC" FromRole="ExternalOrganizations" ToRole="OrganizationParticipation" />
+  </EntityType>
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="GroupID" />
+    </Key>
+    <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SpecialityID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Speciality" Relationship="Self.FK__Groups__Speciali__4CA06362" FromRole="Groups" ToRole="Specialities" />
+    <NavigationProperty Name="Students" Relationship="Self.FK__Students__GroupI__5629CD9C" FromRole="Groups" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="OrganizationParticipation">
+    <Key>
+      <PropertyRef Name="ParttakeID" />
+    </Key>
+    <Property Name="ParttakeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+    <Property Name="EventID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Event" Relationship="Self.FK__Organizat__Event__75A278F5" FromRole="OrganizationParticipation" ToRole="Events" />
+    <NavigationProperty Name="ExternalOrganization" Relationship="Self.FK__Organizat__Organ__74AE54BC" FromRole="OrganizationParticipation" ToRole="ExternalOrganizations" />
+  </EntityType>
+  <EntityType Name="ParticipationRequest">
+    <Key>
+      <PropertyRef Name="RequestID" />
+    </Key>
+    <Property Name="RequestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int32" Nullable="false" />
+    <Property Name="EventID" Type="Int32" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="RequestDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Event" Relationship="Self.FK__Participa__Event__68487DD7" FromRole="ParticipationRequests" ToRole="Events" />
+    <NavigationProperty Name="Student" Relationship="Self.FK__Participa__Stude__6754599E" FromRole="ParticipationRequests" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Students" Relationship="Self.FK__Students__RoleID__5535A963" FromRole="Roles" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="Speciality">
+    <Key>
+      <PropertyRef Name="SpecialityID" />
+    </Key>
+    <Property Name="SpecialityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Groups" Relationship="Self.FK__Groups__Speciali__4CA06362" FromRole="Specialities" ToRole="Groups" />
+  </EntityType>
+  <EntityType Name="StudentParticipation">
+    <Key>
+      <PropertyRef Name="ParticipationID" />
+    </Key>
+    <Property Name="ParticipationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EventID" Type="Int32" Nullable="false" />
+    <Property Name="StudentID" Type="Int32" Nullable="false" />
+    <Property Name="Confirmation" Type="Boolean" />
+    <Property Name="ScoresEarned" Type="Int32" />
+    <NavigationProperty Name="Event" Relationship="Self.FK__StudentPa__Event__6D0D32F4" FromRole="StudentParticipation" ToRole="Events" />
+    <NavigationProperty Name="Student" Relationship="Self.FK__StudentPa__Stude__6E01572D" FromRole="StudentParticipation" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleID" Type="Int32" Nullable="false" />
+    <Property Name="GroupID" Type="Int32" Nullable="false" />
+    <Property Name="LName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Scores" Type="Int32" />
+    <NavigationProperty Name="Documents" Relationship="Self.FK__Documents__Stude__787EE5A0" FromRole="Students" ToRole="Documents" />
+    <NavigationProperty Name="Group" Relationship="Self.FK__Students__GroupI__5629CD9C" FromRole="Students" ToRole="Groups" />
+    <NavigationProperty Name="ParticipationRequests" Relationship="Self.FK__Participa__Stude__6754599E" FromRole="Students" ToRole="ParticipationRequests" />
+    <NavigationProperty Name="Role" Relationship="Self.FK__Students__RoleID__5535A963" FromRole="Students" ToRole="Roles" />
+    <NavigationProperty Name="StudentParticipations" Relationship="Self.FK__StudentPa__Stude__6E01572D" FromRole="Students" ToRole="StudentParticipation" />
+    <NavigationProperty Name="Supervisors" Relationship="Self.FK__Superviso__Stude__0B91BA14" FromRole="Students" ToRole="Supervisors" />
+  </EntityType>
+  <EntityType Name="StudyPeriod">
+    <Key>
+      <PropertyRef Name="PeriodID" />
+    </Key>
+    <Property Name="PeriodID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Events" Relationship="Self.FK__Events__StudyPer__60A75C0F" FromRole="StudyPeriods" ToRole="Events" />
+  </EntityType>
+  <EntityType Name="Supervisor">
+    <Key>
+      <PropertyRef Name="SupervisorID" />
+    </Key>
+    <Property Name="SupervisorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DirectionID" Type="Int32" Nullable="false" />
+    <Property Name="StudentID" Type="Int32" Nullable="false" />
+    <Property Name="AssignedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Direction" Relationship="Self.FK__Superviso__Direc__0A9D95DB" FromRole="Supervisors" ToRole="Directions" />
+    <NavigationProperty Name="Student" Relationship="Self.FK__Superviso__Stude__0B91BA14" FromRole="Supervisors" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK__Events__Directio__619B8048">
+    <End Role="Directions" Type="Self.Direction" Multiplicity="1" />
+    <End Role="Events" Type="Self.Event" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Directions">
+        <PropertyRef Name="DirectionID" />
+      </Principal>
+      <Dependent Role="Events">
+        <PropertyRef Name="DirectionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Superviso__Direc__0A9D95DB">
+    <End Role="Directions" Type="Self.Direction" Multiplicity="1" />
+    <End Role="Supervisors" Type="Self.Supervisor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Directions">
+        <PropertyRef Name="DirectionID" />
+      </Principal>
+      <Dependent Role="Supervisors">
+        <PropertyRef Name="DirectionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Documents__Stude__787EE5A0">
+    <End Role="Students" Type="Self.Student" Multiplicity="1" />
+    <End Role="Documents" Type="Self.Document" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Documents">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EventPhot__Event__7C4F7684">
+    <End Role="Events" Type="Self.Event" Multiplicity="1" />
+    <End Role="EventPhotos" Type="Self.EventPhoto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Events">
+        <PropertyRef Name="EventID" />
+      </Principal>
+      <Dependent Role="EventPhotos">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Events__StudyPer__60A75C0F">
+    <End Role="StudyPeriods" Type="Self.StudyPeriod" Multiplicity="1" />
+    <End Role="Events" Type="Self.Event" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudyPeriods">
+        <PropertyRef Name="PeriodID" />
+      </Principal>
+      <Dependent Role="Events">
+        <PropertyRef Name="StudyPeriodID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Organizat__Event__75A278F5">
+    <End Role="Events" Type="Self.Event" Multiplicity="1" />
+    <End Role="OrganizationParticipation" Type="Self.OrganizationParticipation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Events">
+        <PropertyRef Name="EventID" />
+      </Principal>
+      <Dependent Role="OrganizationParticipation">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Participa__Event__68487DD7">
+    <End Role="Events" Type="Self.Event" Multiplicity="1" />
+    <End Role="ParticipationRequests" Type="Self.ParticipationRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Events">
+        <PropertyRef Name="EventID" />
+      </Principal>
+      <Dependent Role="ParticipationRequests">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StudentPa__Event__6D0D32F4">
+    <End Role="Events" Type="Self.Event" Multiplicity="1" />
+    <End Role="StudentParticipation" Type="Self.StudentParticipation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Events">
+        <PropertyRef Name="EventID" />
+      </Principal>
+      <Dependent Role="StudentParticipation">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Organizat__Organ__74AE54BC">
+    <End Role="ExternalOrganizations" Type="Self.ExternalOrganization" Multiplicity="1" />
+    <End Role="OrganizationParticipation" Type="Self.OrganizationParticipation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ExternalOrganizations">
+        <PropertyRef Name="OrganizationID" />
+      </Principal>
+      <Dependent Role="OrganizationParticipation">
+        <PropertyRef Name="OrganizationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Groups__Speciali__4CA06362">
+    <End Role="Specialities" Type="Self.Speciality" Multiplicity="1" />
+    <End Role="Groups" Type="Self.Group" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specialities">
+        <PropertyRef Name="SpecialityID" />
+      </Principal>
+      <Dependent Role="Groups">
+        <PropertyRef Name="SpecialityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Students__GroupI__5629CD9C">
+    <End Role="Groups" Type="Self.Group" Multiplicity="1" />
+    <End Role="Students" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groups">
+        <PropertyRef Name="GroupID" />
+      </Principal>
+      <Dependent Role="Students">
+        <PropertyRef Name="GroupID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Participa__Stude__6754599E">
+    <End Role="Students" Type="Self.Student" Multiplicity="1" />
+    <End Role="ParticipationRequests" Type="Self.ParticipationRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="ParticipationRequests">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Students__RoleID__5535A963">
+    <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+    <End Role="Students" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="Students">
+        <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StudentPa__Stude__6E01572D">
+    <End Role="Students" Type="Self.Student" Multiplicity="1" />
+    <End Role="StudentParticipation" Type="Self.StudentParticipation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="StudentParticipation">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Superviso__Stude__0B91BA14">
+    <End Role="Students" Type="Self.Student" Multiplicity="1" />
+    <End Role="Supervisors" Type="Self.Supervisor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Supervisors">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="StudentCouncilAppEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Directions" EntityType="Self.Direction" />
+    <EntitySet Name="Documents" EntityType="Self.Document" />
+    <EntitySet Name="EventPhotos" EntityType="Self.EventPhoto" />
+    <EntitySet Name="Events" EntityType="Self.Event" />
+    <EntitySet Name="ExternalOrganizations" EntityType="Self.ExternalOrganization" />
+    <EntitySet Name="Groups" EntityType="Self.Group" />
+    <EntitySet Name="OrganizationParticipations" EntityType="Self.OrganizationParticipation" />
+    <EntitySet Name="ParticipationRequests" EntityType="Self.ParticipationRequest" />
+    <EntitySet Name="Roles" EntityType="Self.Role" />
+    <EntitySet Name="Specialities" EntityType="Self.Speciality" />
+    <EntitySet Name="StudentParticipations" EntityType="Self.StudentParticipation" />
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <EntitySet Name="StudyPeriods" EntityType="Self.StudyPeriod" />
+    <EntitySet Name="Supervisors" EntityType="Self.Supervisor" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK__Events__Directio__619B8048" Association="Self.FK__Events__Directio__619B8048">
+      <End Role="Directions" EntitySet="Directions" />
+      <End Role="Events" EntitySet="Events" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Superviso__Direc__0A9D95DB" Association="Self.FK__Superviso__Direc__0A9D95DB">
+      <End Role="Directions" EntitySet="Directions" />
+      <End Role="Supervisors" EntitySet="Supervisors" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Documents__Stude__787EE5A0" Association="Self.FK__Documents__Stude__787EE5A0">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="Documents" EntitySet="Documents" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EventPhot__Event__7C4F7684" Association="Self.FK__EventPhot__Event__7C4F7684">
+      <End Role="Events" EntitySet="Events" />
+      <End Role="EventPhotos" EntitySet="EventPhotos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Events__StudyPer__60A75C0F" Association="Self.FK__Events__StudyPer__60A75C0F">
+      <End Role="StudyPeriods" EntitySet="StudyPeriods" />
+      <End Role="Events" EntitySet="Events" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Organizat__Event__75A278F5" Association="Self.FK__Organizat__Event__75A278F5">
+      <End Role="Events" EntitySet="Events" />
+      <End Role="OrganizationParticipation" EntitySet="OrganizationParticipations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Participa__Event__68487DD7" Association="Self.FK__Participa__Event__68487DD7">
+      <End Role="Events" EntitySet="Events" />
+      <End Role="ParticipationRequests" EntitySet="ParticipationRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StudentPa__Event__6D0D32F4" Association="Self.FK__StudentPa__Event__6D0D32F4">
+      <End Role="Events" EntitySet="Events" />
+      <End Role="StudentParticipation" EntitySet="StudentParticipations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Organizat__Organ__74AE54BC" Association="Self.FK__Organizat__Organ__74AE54BC">
+      <End Role="ExternalOrganizations" EntitySet="ExternalOrganizations" />
+      <End Role="OrganizationParticipation" EntitySet="OrganizationParticipations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Groups__Speciali__4CA06362" Association="Self.FK__Groups__Speciali__4CA06362">
+      <End Role="Specialities" EntitySet="Specialities" />
+      <End Role="Groups" EntitySet="Groups" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Students__GroupI__5629CD9C" Association="Self.FK__Students__GroupI__5629CD9C">
+      <End Role="Groups" EntitySet="Groups" />
+      <End Role="Students" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Participa__Stude__6754599E" Association="Self.FK__Participa__Stude__6754599E">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="ParticipationRequests" EntitySet="ParticipationRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Students__RoleID__5535A963" Association="Self.FK__Students__RoleID__5535A963">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Students" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StudentPa__Stude__6E01572D" Association="Self.FK__StudentPa__Stude__6E01572D">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="StudentParticipation" EntitySet="StudentParticipations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Superviso__Stude__0B91BA14" Association="Self.FK__Superviso__Stude__0B91BA14">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="Supervisors" EntitySet="Supervisors" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,201 @@
+﻿<UserControl x:Class="StudentCouncilApp.DirectionsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F5F5">
+
+    <UserControl.Resources>
+        <Style x:Key="DirectionCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8" Opacity="0.15" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" Background="#2C3E50" Margin="0,0,0,20">
+            <StackPanel Margin="20">
+                <TextBlock Text="Найди свою стаю!" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Выбери направление, которое тебе по душе, знакомься с руководителями и врывайся в движ." 
+                           FontSize="14" 
+                           Foreground="#BDC3C7"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           Margin="0,10,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Сетка направлений -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="DirectionsGrid">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource DirectionCardStyle}"
+                                Width="280"
+                                MouseLeftButtonDown="DirectionCard_Click">
+                            <Border.Tag>
+                                <Binding Path="DirectionID"/>
+                            </Border.Tag>
+
+                            <StackPanel>
+                                <!-- Иконка и название -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="{Binding Icon}" 
+                                               FontSize="32"
+                                               Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Name}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold"
+                                               Foreground="#2C3E50"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <!-- Описание -->
+                                <TextBlock Text="{Binding Description}" 
+                                           FontSize="12" 
+                                           Foreground="#7F8C8D"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,10"/>
+
+                                <!-- Руководитель -->
+                                <Border Background="#ECF0F1" 
+                                        CornerRadius="5" 
+                                        Padding="8"
+                                        Margin="0,5,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="👤 Руководитель" 
+                                                   FontSize="10" 
+                                                   Foreground="#7F8C8D"/>
+                                        <TextBlock Text="{Binding SupervisorName}" 
+                                                   FontSize="12" 
+                                                   FontWeight="Bold"
+                                                   Foreground="#2C3E50"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Детальное окно (изначально скрыто) -->
+        <Border x:Name="detailOverlay" 
+                Background="#80000000" 
+                Visibility="Collapsed"
+                Grid.RowSpan="2">
+            <Border Width="500" 
+                    Height="500" 
+                    Background="White" 
+                    CornerRadius="15"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" Opacity="0.3"/>
+                </Border.Effect>
+
+                <StackPanel Margin="20">
+                    <!-- Кнопка закрытия -->
+                    <Button x:Name="btnCloseDetail" 
+                            Content="✕" 
+                            Width="30" 
+                            Height="30"
+                            HorizontalAlignment="Right"
+                            Background="#E74C3C" 
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Cursor="Hand"
+                            Click="BtnCloseDetail_Click"/>
+
+                    <!-- Фото руководителя (заглушка) -->
+                    <Border Background="#3498DB" 
+                            Width="120" 
+                            Height="120" 
+                            CornerRadius="60"
+                            HorizontalAlignment="Center"
+                            Margin="0,10,0,10">
+                        <TextBlock x:Name="detailSupervisorInitial" 
+                                   Text="👤" 
+                                   FontSize="48" 
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Имя руководителя -->
+                    <TextBlock x:Name="detailSupervisorName" 
+                               FontSize="20" 
+                               FontWeight="Bold"
+                               Foreground="#2C3E50"
+                               HorizontalAlignment="Center"
+                               Margin="0,10,0,5"/>
+
+                    <!-- Название направления -->
+                    <TextBlock x:Name="detailDirectionName" 
+                               FontSize="14" 
+                               Foreground="#7F8C8D"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,15"/>
+
+                    <!-- Приветственное сообщение -->
+                    <Border Background="#ECF0F1" 
+                            CornerRadius="8" 
+                            Padding="15"
+                            Margin="0,10,0,10">
+                        <TextBlock x:Name="detailWelcomeMessage" 
+                                   FontSize="13" 
+                                   Foreground="#2C3E50"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+
+                    <!-- Кнопки действий -->
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Center" 
+                                Margin="0,20,0,0">
+                        <Button x:Name="btnCallSupervisor" 
+                                Content="📞 Написать руководителю" 
+                                Height="40"
+                                Padding="20,0"
+                                Background="#27AE60" 
+                                Foreground="White"
+                                FontWeight="Bold"
+                                Cursor="Hand"
+                                Margin="0,0,10,0"
+                                Click="BtnCallSupervisor_Click"/>
+
+                        <Button x:Name="btnJoinChat" 
+                                Content="💬 Вступить в беседу" 
+                                Height="40"
+                                Padding="20,0"
+                                Background="#3498DB" 
+                                Foreground="White"
+                                FontWeight="Bold"
+                                Cursor="Hand"
+                                Click="BtnJoinChat_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

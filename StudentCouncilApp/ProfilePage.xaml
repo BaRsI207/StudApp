@@ -1,0 +1,265 @@
+﻿<UserControl x:Class="StudentCouncilApp.ProfilePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F5F5">
+
+    <UserControl.Resources>
+        <Style x:Key="SectionBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="5" Opacity="0.1" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+
+                <!-- Заголовок -->
+                <TextBlock Text="Мой профиль" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           Foreground="#2C3E50"
+                           Margin="0,0,0,20"/>
+
+                <!-- Личные данные -->
+                <Border Style="{StaticResource SectionBorderStyle}">
+                    <StackPanel>
+                        <TextBlock Text="👤 Личные данные" 
+                                   FontSize="16" 
+                                   FontWeight="Bold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,15"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="ФИО:" Foreground="#7F8C8D" Margin="0,5"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtFullName" Foreground="#2C3E50" Margin="0,5" FontWeight="SemiBold"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Группа:" Foreground="#7F8C8D" Margin="0,5"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtGroup" Foreground="#2C3E50" Margin="0,5"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Email:" Foreground="#7F8C8D" Margin="0,5"/>
+                            <TextBox x:Name="txtEmail" Grid.Row="2" Grid.Column="1" Margin="0,5" Height="30"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Телефон:" Foreground="#7F8C8D" Margin="0,5"/>
+                            <TextBox x:Name="txtPhone" Grid.Row="3" Grid.Column="1" Margin="0,5" Height="30"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Логин:" Foreground="#7F8C8D" Margin="0,5"/>
+                            <TextBox x:Name="txtLogin" Grid.Row="4" Grid.Column="1" Margin="0,5" Height="30"/>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                            <Button x:Name="btnSaveProfile" 
+                                    Content="💾 Сохранить изменения" 
+                                    Style="{StaticResource ActionButtonStyle}"
+                                    Background="#27AE60"
+                                    Click="BtnSaveProfile_Click"/>
+                        </StackPanel>
+
+                        <TextBlock x:Name="txtProfileStatus" 
+                                   Foreground="Green" 
+                                   FontSize="12"
+                                   Margin="0,10,0,0"
+                                   Visibility="Collapsed"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Мои записи на мероприятия -->
+                <Border Style="{StaticResource SectionBorderStyle}">
+                    <StackPanel>
+                        <TextBlock Text="📅 Мои мероприятия" 
+                                   FontSize="16" 
+                                   FontWeight="Bold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,10"/>
+
+                        <TextBlock Text="✅ Подтвержденные:" 
+                                   FontSize="13" 
+                                   FontWeight="Bold"
+                                   Foreground="#27AE60"
+                                   Margin="0,10,0,5"/>
+                        <ItemsControl x:Name="listConfirmedEvents" Margin="10,0,0,10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" 
+                                               FontSize="12" 
+                                               Foreground="#555"
+                                               Margin="0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="⏳ Ожидают подтверждения:" 
+                                   FontSize="13" 
+                                   FontWeight="Bold"
+                                   Foreground="#F39C12"
+                                   Margin="0,10,0,5"/>
+                        <ItemsControl x:Name="listPendingEvents" Margin="10,0,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" 
+                                               FontSize="12" 
+                                               Foreground="#555"
+                                               Margin="0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Мои достижения -->
+                <Border Style="{StaticResource SectionBorderStyle}">
+                    <StackPanel>
+                        <TextBlock Text="🏆 Мои достижения" 
+                                   FontSize="16" 
+                                   FontWeight="Bold"
+                                   Foreground="#2C3E50"
+                                   Margin="0,0,0,10"/>
+
+                        <Button x:Name="btnAddAchievement" 
+                                Content="+ Добавить достижение" 
+                                Style="{StaticResource ActionButtonStyle}"
+                                Background="#3498DB"
+                                Width="200"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,0,15"
+                                Click="BtnAddAchievement_Click"/>
+
+                        <ItemsControl x:Name="listAchievements">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#F8F9FA" 
+                                            CornerRadius="8" 
+                                            Padding="10" 
+                                            Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding Note}" 
+                                                           FontSize="13" 
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#2C3E50"
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding UploadDate, StringFormat='dd.MM.yyyy HH:mm'}" 
+                                                           FontSize="11" 
+                                                           Foreground="#7F8C8D"
+                                                           Margin="0,5,0,0"/>
+                                                <TextBlock Text="{Binding DocumentLink}" 
+                                                           FontSize="10" 
+                                                           Foreground="#3498DB"
+                                                           TextWrapping="Wrap"/>
+                                            </StackPanel>
+
+                                            <Button Grid.Column="1" 
+                                                    Content="✕" 
+                                                    Width="30" 
+                                                    Height="30"
+                                                    Background="#E74C3C" 
+                                                    Foreground="White"
+                                                    FontWeight="Bold"
+                                                    Cursor="Hand"
+                                                    Tag="{Binding DocumentID}"
+                                                    Click="BtnDeleteAchievement_Click"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Диалог добавления достижения -->
+        <Border x:Name="addAchievementOverlay" 
+                Background="#80000000" 
+                Visibility="Collapsed">
+            <Border Width="450" 
+                    Background="White" 
+                    CornerRadius="15"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" Opacity="0.3"/>
+                </Border.Effect>
+
+                <StackPanel Margin="20">
+                    <TextBlock Text="➕ Добавить достижение" 
+                               FontSize="18" 
+                               FontWeight="Bold"
+                               Foreground="#2C3E50"
+                               Margin="0,0,0,15"/>
+
+                    <TextBlock Text="Описание достижения:" 
+                               Foreground="#7F8C8D" 
+                               Margin="0,0,0,5"/>
+                    <TextBox x:Name="txtAchievementNote" 
+                             Height="80" 
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Padding="10"/>
+
+                    <TextBlock Text="Ссылка на фото/документ:" 
+                               Foreground="#7F8C8D" 
+                               Margin="0,15,0,5"/>
+                    <TextBox x:Name="txtAchievementLink" 
+                             Height="35" 
+                             Padding="10"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                        <Button x:Name="btnCancelAchievement" 
+                                Content="Отмена" 
+                                Height="35" 
+                                Width="100"
+                                Background="#95A5A6" 
+                                Foreground="White"
+                                Cursor="Hand"
+                                Margin="0,0,10,0"
+                                Click="BtnCancelAchievement_Click"/>
+
+                        <Button x:Name="btnSaveAchievement" 
+                                Content="Сохранить" 
+                                Height="35" 
+                                Width="100"
+                                Background="#27AE60" 
+                                Foreground="White"
+                                FontWeight="Bold"
+                                Cursor="Hand"
+                                Click="BtnSaveAchievement_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

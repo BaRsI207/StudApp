@@ -1,0 +1,160 @@
+﻿<UserControl x:Class="StudentCouncilApp.HomePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F5F5">
+
+    <UserControl.Resources>
+        <DropShadowEffect x:Key="ShadowEffect" 
+                          BlurRadius="10" 
+                          Direction="270" 
+                          ShadowDepth="2" 
+                          Opacity="0.2"/>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+
+            <!-- Блок с цитатой -->
+            <Border Background="White" 
+                    CornerRadius="10" 
+                    Padding="20" 
+                    Margin="0,0,0,20"
+                    Effect="{StaticResource ShadowEffect}">
+                <StackPanel>
+                    <TextBlock x:Name="txtQuote" 
+                               Text="Загрузка цитаты..." 
+                               FontSize="18" 
+                               FontStyle="Italic"
+                               Foreground="#2C3E50"
+                               TextWrapping="Wrap"/>
+                    <TextBlock Text="~ Студенческий совет" 
+                               FontSize="12" 
+                               Foreground="#7F8C8D"
+                               HorizontalAlignment="Right"
+                               Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Виджет с енотом (кликабельный) -->
+            <Border x:Name="borderRaccoon"
+                    CornerRadius="10" 
+                    Padding="15" 
+                    Margin="0,0,0,20"
+                    Cursor="Hand"
+                    MouseLeftButtonDown="RaccoonWidget_Click">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF6B6B" Offset="0"/>
+                        <GradientStop Color="#FF8E53" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <StackPanel>
+                    <TextBlock x:Name="txtRaccoonMessage" 
+                               Text="Твой енот ждёт твоих побед!" 
+                               FontSize="16" 
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="txtRaccoonStats" 
+                               Text="Баллов: 0" 
+                               FontSize="12" 
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                    <TextBlock Text="🦝 Нажми, чтобы перейти к рейтингу" 
+                               FontSize="11" 
+                               Foreground="#FFF5E6"
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Ближайшее событие -->
+            <TextBlock Text="Ближайшее событие" 
+                       FontSize="18" 
+                       FontWeight="Bold" 
+                       Foreground="#2C3E50"
+                       Margin="0,0,0,10"/>
+
+            <Border x:Name="borderNearestEvent" 
+                    Background="White" 
+                    CornerRadius="10" 
+                    Padding="15" 
+                    Margin="0,0,0,20"
+                    BorderBrush="#3498DB"
+                    BorderThickness="2">
+                <StackPanel>
+                    <TextBlock x:Name="txtEventDate" 
+                               Text="Дата" 
+                               FontSize="14" 
+                               FontWeight="Bold"
+                               Foreground="#E67E22"/>
+                    <TextBlock x:Name="txtEventName" 
+                               Text="Название" 
+                               FontSize="16" 
+                               FontWeight="Bold"
+                               Margin="0,5,0,5"/>
+                    <TextBlock x:Name="txtEventPlace" 
+                               Text="Место" 
+                               FontSize="13" 
+                               Foreground="#7F8C8D"/>
+                    <TextBlock x:Name="txtEventScores" 
+                               Text="Баллы" 
+                               FontSize="13" 
+                               Foreground="#27AE60"
+                               FontWeight="Bold"/>
+                    <TextBlock x:Name="txtEventParticipants" 
+                               Text="Участников" 
+                               FontSize="12" 
+                               Foreground="#7F8C8D"
+                               Margin="0,5,0,10"/>
+
+                    <Button x:Name="btnJoinEvent" 
+                            Content="Пойду!" 
+                            Height="35" 
+                            Width="120"
+                            Background="#27AE60" 
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Cursor="Hand"
+                            Click="BtnJoinEvent_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Лента достижений -->
+            <TextBlock Text="Последние достижения" 
+                       FontSize="18" 
+                       FontWeight="Bold" 
+                       Foreground="#2C3E50"
+                       Margin="0,0,0,10"/>
+
+            <ItemsControl x:Name="listAchievements" Margin="0,0,0,20">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White" 
+                                CornerRadius="8" 
+                                Padding="10" 
+                                Margin="5" 
+                                Width="250">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Note}" 
+                                           FontSize="12" 
+                                           TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding UploadDate, StringFormat='dd.MM.yyyy'}" 
+                                           FontSize="10" 
+                                           Foreground="#7F8C8D"
+                                           Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
