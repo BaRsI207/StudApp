@@ -21,6 +21,7 @@ namespace StudentCouncilApp
             this.OrganizationParticipations = new HashSet<OrganizationParticipation>();
             this.ParticipationRequests = new HashSet<ParticipationRequest>();
             this.StudentParticipations = new HashSet<StudentParticipation>();
+            this.Notifications = new HashSet<Notification>();
         }
     
         public int EventID { get; set; }
@@ -44,5 +45,7 @@ namespace StudentCouncilApp
         public virtual ICollection<ParticipationRequest> ParticipationRequests { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentParticipation> StudentParticipations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

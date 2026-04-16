@@ -62,6 +62,18 @@
     <Property Name="SpecialityID" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
   </EntityType>
+  <EntityType Name="Notifications">
+    <Key>
+      <PropertyRef Name="NotificationID" />
+    </Key>
+    <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentID" Type="int" Nullable="false" />
+    <Property Name="EventID" Type="int" />
+    <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Message" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="IsRead" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+  </EntityType>
   <EntityType Name="OrganizationParticipation">
     <Key>
       <PropertyRef Name="ParttakeID" />
@@ -208,6 +220,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__Notificat__Event__17036CC0">
+    <End Role="Events" Type="Self.Events" Multiplicity="0..1" />
+    <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Events">
+        <PropertyRef Name="EventID" />
+      </Principal>
+      <Dependent Role="Notifications">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Notificat__Stude__160F4887">
+    <End Role="Students" Type="Self.Students" Multiplicity="1" />
+    <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Notifications">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__Organizat__Event__75A278F5">
     <End Role="Events" Type="Self.Events" Multiplicity="1" />
     <End Role="OrganizationParticipation" Type="Self.OrganizationParticipation" Multiplicity="*" />
@@ -335,6 +371,7 @@
     <EntitySet Name="Events" EntityType="Self.Events" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ExternalOrganizations" EntityType="Self.ExternalOrganizations" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrganizationParticipation" EntityType="Self.OrganizationParticipation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ParticipationRequests" EntityType="Self.ParticipationRequests" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
@@ -363,6 +400,14 @@
     <AssociationSet Name="FK__Groups__Speciali__4CA06362" Association="Self.FK__Groups__Speciali__4CA06362">
       <End Role="Specialities" EntitySet="Specialities" />
       <End Role="Groups" EntitySet="Groups" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Notificat__Event__17036CC0" Association="Self.FK__Notificat__Event__17036CC0">
+      <End Role="Events" EntitySet="Events" />
+      <End Role="Notifications" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Notificat__Stude__160F4887" Association="Self.FK__Notificat__Stude__160F4887">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="Notifications" EntitySet="Notifications" />
     </AssociationSet>
     <AssociationSet Name="FK__Organizat__Event__75A278F5" Association="Self.FK__Organizat__Event__75A278F5">
       <End Role="Events" EntitySet="Events" />

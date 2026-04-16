@@ -107,6 +107,9 @@
     <Compile Include="Models\DirectionModel.cs" />
     <Compile Include="Models\EventDisplayModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
+    <Compile Include="Notification.cs">
+      <DependentUpon>StudentCouncilModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="OrganizationParticipation.cs">
       <DependentUpon>StudentCouncilModel.tt</DependentUpon>
     </Compile>
@@ -156,6 +159,21 @@
     <Compile Include="Supervisor.cs">
       <DependentUpon>StudentCouncilModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SupervisorDirectionTab.xaml.cs">
+      <DependentUpon>SupervisorDirectionTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SupervisorEventsTab.xaml.cs">
+      <DependentUpon>SupervisorEventsTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SupervisorPanel.xaml.cs">
+      <DependentUpon>SupervisorPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SupervisorReportsTab.xaml.cs">
+      <DependentUpon>SupervisorReportsTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SupervisorRequestsTab.xaml.cs">
+      <DependentUpon>SupervisorRequestsTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="sysdiagram.cs">
       <DependentUpon>StudentCouncilModel.tt</DependentUpon>
     </Compile>
@@ -196,6 +214,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RegisterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SupervisorDirectionTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SupervisorEventsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SupervisorPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SupervisorReportsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SupervisorRequestsTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

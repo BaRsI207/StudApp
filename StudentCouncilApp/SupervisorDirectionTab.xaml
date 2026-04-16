@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="StudentCouncilApp.SupervisorDirectionTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="White">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" 
+                   Text="Редактирование карточки направления" 
+                   FontSize="18" 
+                   FontWeight="Bold"
+                   Foreground="#2C3E50"
+                   Margin="0,0,0,20"/>
+
+        <TextBlock Grid.Row="1" 
+                   Text="Название направления:" 
+                   Foreground="#7F8C8D" 
+                   Margin="0,0,0,5"/>
+        <TextBox x:Name="txtDirectionName" 
+                 Grid.Row="2" 
+                 Height="35" 
+                 Padding="10"
+                 Margin="0,0,0,15"
+                 IsEnabled="False"/>
+
+        <TextBlock Grid.Row="3" 
+                   Text="Описание направления (будет видно студентам):" 
+                   Foreground="#7F8C8D" 
+                   Margin="0,0,0,5"/>
+        <TextBox x:Name="txtDirectionNote" 
+                 Grid.Row="4" 
+                 Height="100" 
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 Padding="10"
+                 Margin="0,0,0,15"/>
+
+        <TextBlock Grid.Row="5" 
+                   Text="Приветственное сообщение от руководителя:" 
+                   Foreground="#7F8C8D" 
+                   Margin="0,0,0,5"/>
+        <TextBox x:Name="txtWelcomeMessage" 
+                 Grid.Row="6" 
+                 Height="100" 
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 Padding="10"
+                 Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnSave" 
+                    Content="💾 Сохранить изменения" 
+                    Height="40" 
+                    Width="180"
+                    Background="#27AE60" 
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Cursor="Hand"
+                    Click="BtnSave_Click"/>
+        </StackPanel>
+
+        <TextBlock x:Name="txtStatus" 
+                   Grid.Row="8"
+                   Foreground="Green" 
+                   FontSize="12"
+                   Margin="0,10,0,0"
+                   Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

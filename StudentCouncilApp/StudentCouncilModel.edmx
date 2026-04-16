@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище StudentCouncilAppModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище StudentCouncilAppModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Directions">
           <Key>
             <PropertyRef Name="DirectionID" />
@@ -66,6 +66,18 @@
           <Property Name="GroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SpecialityID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="EventID" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsRead" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="OrganizationParticipation">
           <Key>
@@ -213,6 +225,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Notificat__Event__17036CC0">
+          <End Role="Events" Type="Self.Events" Multiplicity="0..1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Events">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificat__Stude__160F4887">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Organizat__Event__75A278F5">
           <End Role="Events" Type="Self.Events" Multiplicity="1" />
           <End Role="OrganizationParticipation" Type="Self.OrganizationParticipation" Multiplicity="*" />
@@ -340,6 +376,7 @@
           <EntitySet Name="Events" EntityType="Self.Events" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExternalOrganizations" EntityType="Self.ExternalOrganizations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrganizationParticipation" EntityType="Self.OrganizationParticipation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParticipationRequests" EntityType="Self.ParticipationRequests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
@@ -368,6 +405,14 @@
           <AssociationSet Name="FK__Groups__Speciali__4CA06362" Association="Self.FK__Groups__Speciali__4CA06362">
             <End Role="Specialities" EntitySet="Specialities" />
             <End Role="Groups" EntitySet="Groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__Event__17036CC0" Association="Self.FK__Notificat__Event__17036CC0">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__Stude__160F4887" Association="Self.FK__Notificat__Stude__160F4887">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Notifications" EntitySet="Notifications" />
           </AssociationSet>
           <AssociationSet Name="FK__Organizat__Event__75A278F5" Association="Self.FK__Organizat__Event__75A278F5">
             <End Role="Events" EntitySet="Events" />
@@ -410,8 +455,7 @@
             <End Role="Supervisors" EntitySet="Supervisors" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StudentCouncilAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -467,6 +511,7 @@
           <NavigationProperty Name="OrganizationParticipations" Relationship="Self.FK__Organizat__Event__75A278F5" FromRole="Events" ToRole="OrganizationParticipation" />
           <NavigationProperty Name="ParticipationRequests" Relationship="Self.FK__Participa__Event__68487DD7" FromRole="Events" ToRole="ParticipationRequests" />
           <NavigationProperty Name="StudentParticipations" Relationship="Self.FK__StudentPa__Event__6D0D32F4" FromRole="Events" ToRole="StudentParticipation" />
+          <NavigationProperty Name="Notifications" Relationship="StudentCouncilAppModel.FK__Notificat__Event__17036CC0" FromRole="Event" ToRole="Notification" />
         </EntityType>
         <EntityType Name="ExternalOrganization">
           <Key>
@@ -562,6 +607,7 @@
           <NavigationProperty Name="Role" Relationship="Self.FK__Students__RoleID__5535A963" FromRole="Students" ToRole="Roles" />
           <NavigationProperty Name="StudentParticipations" Relationship="Self.FK__StudentPa__Stude__6E01572D" FromRole="Students" ToRole="StudentParticipation" />
           <NavigationProperty Name="Supervisors" Relationship="Self.FK__Superviso__Stude__0B91BA14" FromRole="Students" ToRole="Supervisors" />
+          <NavigationProperty Name="Notifications" Relationship="StudentCouncilAppModel.FK__Notificat__Stude__160F4887" FromRole="Student" ToRole="Notification" />
         </EntityType>
         <EntityType Name="StudyPeriod">
           <Key>
@@ -849,7 +895,54 @@
             <End Role="Students" EntitySet="Students" />
             <End Role="Supervisors" EntitySet="Supervisors" />
           </AssociationSet>
+          <EntitySet Name="Notifications" EntityType="StudentCouncilAppModel.Notification" />
+          <AssociationSet Name="FK__Notificat__Event__17036CC0" Association="StudentCouncilAppModel.FK__Notificat__Event__17036CC0">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__Stude__160F4887" Association="StudentCouncilAppModel.FK__Notificat__Stude__160F4887">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="EventID" Type="Int32" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsRead" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Event" Relationship="StudentCouncilAppModel.FK__Notificat__Event__17036CC0" FromRole="Notification" ToRole="Event" />
+          <NavigationProperty Name="Student" Relationship="StudentCouncilAppModel.FK__Notificat__Stude__160F4887" FromRole="Notification" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK__Notificat__Event__17036CC0">
+          <End Type="StudentCouncilAppModel.Event" Role="Event" Multiplicity="0..1" />
+          <End Type="StudentCouncilAppModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificat__Stude__160F4887">
+          <End Type="StudentCouncilAppModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="StudentCouncilAppModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1016,6 +1109,19 @@
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="StudentCouncilAppModel.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -52,6 +52,7 @@
     <NavigationProperty Name="OrganizationParticipations" Relationship="Self.FK__Organizat__Event__75A278F5" FromRole="Events" ToRole="OrganizationParticipation" />
     <NavigationProperty Name="ParticipationRequests" Relationship="Self.FK__Participa__Event__68487DD7" FromRole="Events" ToRole="ParticipationRequests" />
     <NavigationProperty Name="StudentParticipations" Relationship="Self.FK__StudentPa__Event__6D0D32F4" FromRole="Events" ToRole="StudentParticipation" />
+    <NavigationProperty Name="Notifications" Relationship="StudentCouncilAppModel.FK__Notificat__Event__17036CC0" FromRole="Event" ToRole="Notification" />
   </EntityType>
   <EntityType Name="ExternalOrganization">
     <Key>
@@ -147,6 +148,7 @@
     <NavigationProperty Name="Role" Relationship="Self.FK__Students__RoleID__5535A963" FromRole="Students" ToRole="Roles" />
     <NavigationProperty Name="StudentParticipations" Relationship="Self.FK__StudentPa__Stude__6E01572D" FromRole="Students" ToRole="StudentParticipation" />
     <NavigationProperty Name="Supervisors" Relationship="Self.FK__Superviso__Stude__0B91BA14" FromRole="Students" ToRole="Supervisors" />
+    <NavigationProperty Name="Notifications" Relationship="StudentCouncilAppModel.FK__Notificat__Stude__160F4887" FromRole="Student" ToRole="Notification" />
   </EntityType>
   <EntityType Name="StudyPeriod">
     <Key>
@@ -434,5 +436,52 @@
       <End Role="Students" EntitySet="Students" />
       <End Role="Supervisors" EntitySet="Supervisors" />
     </AssociationSet>
+    <EntitySet Name="Notifications" EntityType="StudentCouncilAppModel.Notification" />
+    <AssociationSet Name="FK__Notificat__Event__17036CC0" Association="StudentCouncilAppModel.FK__Notificat__Event__17036CC0">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="Notification" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Notificat__Stude__160F4887" Association="StudentCouncilAppModel.FK__Notificat__Stude__160F4887">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Notification" EntitySet="Notifications" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="NotificationID" />
+    </Key>
+    <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentID" Type="Int32" Nullable="false" />
+    <Property Name="EventID" Type="Int32" />
+    <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="IsRead" Type="Boolean" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Event" Relationship="StudentCouncilAppModel.FK__Notificat__Event__17036CC0" FromRole="Notification" ToRole="Event" />
+    <NavigationProperty Name="Student" Relationship="StudentCouncilAppModel.FK__Notificat__Stude__160F4887" FromRole="Notification" ToRole="Student" />
+  </EntityType>
+  <Association Name="FK__Notificat__Event__17036CC0">
+    <End Type="StudentCouncilAppModel.Event" Role="Event" Multiplicity="0..1" />
+    <End Type="StudentCouncilAppModel.Notification" Role="Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="EventID" />
+      </Principal>
+      <Dependent Role="Notification">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Notificat__Stude__160F4887">
+    <End Type="StudentCouncilAppModel.Student" Role="Student" Multiplicity="1" />
+    <End Type="StudentCouncilAppModel.Notification" Role="Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Notification">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

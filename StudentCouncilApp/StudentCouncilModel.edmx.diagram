@@ -35,6 +35,9 @@
         <AssociationConnector Association="StudentCouncilAppModel.FK__Students__RoleID__5535A963" ManuallyRouted="false" />
         <AssociationConnector Association="StudentCouncilAppModel.FK__StudentPa__Stude__6E01572D" ManuallyRouted="false" />
         <AssociationConnector Association="StudentCouncilAppModel.FK__Superviso__Stude__0B91BA14" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="StudentCouncilAppModel.Notification" Width="1.5" PointX="12.5" PointY="7" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Notificat__Event__17036CC0" />
+        <AssociationConnector Association="StudentCouncilAppModel.FK__Notificat__Stude__160F4887" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 H:\StudApp\StudentCouncilApp\StudentCouncilApp\App.xaml
-8-2037038373
+13-226245354
 22042509143
-351932590443
+412003423047
 20791077568
-DirectionsPage.xaml;EventsPage.xaml;HomePage.xaml;MainAppWindow.xaml;MainWindow.xaml;ProfilePage.xaml;RatingPage.xaml;RegisterWindow.xaml;
+DirectionsPage.xaml;EventsPage.xaml;HomePage.xaml;MainAppWindow.xaml;MainWindow.xaml;ProfilePage.xaml;RatingPage.xaml;RegisterWindow.xaml;SupervisorDirectionTab.xaml;SupervisorEventsTab.xaml;SupervisorPanel.xaml;SupervisorReportsTab.xaml;SupervisorRequestsTab.xaml;
 
 False
 

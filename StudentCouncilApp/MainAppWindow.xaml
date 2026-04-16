@@ -32,6 +32,17 @@
                 <Button x:Name="btnLogout" Content="Выход" Width="100" Margin="5"
                         Background="#E74C3C" Foreground="White" FontSize="14"
                         Cursor="Hand"/>
+                <Button x:Name="btnNotifications" 
+                        Content="🔔" 
+                        Width="40" 
+                        Margin="5"
+                        Background="Transparent" 
+                        Foreground="White" 
+                        FontSize="16"
+                        Cursor="Hand"/>
+                <Button x:Name="btnSupervisor" Content="👑 Управление" Width="100" Margin="5"
+                        Background="Transparent" Foreground="White" FontSize="14"
+                        Cursor="Hand" Visibility="Collapsed"/>
             </StackPanel>
         </Border>
 

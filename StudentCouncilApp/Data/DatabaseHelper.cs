@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace StudentCouncilApp.Data
 {
@@ -397,6 +398,303 @@ namespace StudentCouncilApp.Data
                 .ToList();
 
             return _context.Events.Where(e => eventIds.Contains(e.EventID)).ToList();
+        }
+
+        // Получить мероприятия руководителя по его направлению
+        public List<Event> GetEventsBySupervisor(int studentId)
+        {
+            // Получаем направления, которыми руководит студент
+            var directions = GetStudentDirections(studentId);
+            var directionIds = directions.Select(d => d.DirectionID).ToList();
+
+            return _context.Events
+                .Where(e => directionIds.Contains(e.DirectionID))
+                .OrderByDescending(e => e.EventDate)
+                .ToList();
+        }
+
+        // Получить заявки на мероприятие
+        public List<ParticipationRequest> GetRequestsByEvent(int eventId)
+        {
+            return _context.ParticipationRequests
+                .Where(r => r.EventID == eventId)
+                .Include(r => r.Student)
+                .ToList();
+        }
+
+        // Принять заявку (создать участие и удалить заявку)
+        public bool AcceptRequest(int requestId, int scores)
+        {
+            try
+            {
+                var request = _context.ParticipationRequests.FirstOrDefault(r => r.RequestID == requestId);
+                if (request != null)
+                {
+                    var participation = new StudentParticipation
+                    {
+                        EventID = request.EventID,
+                        StudentID = request.StudentID,
+                        Confirmation = true,
+                        ScoresEarned = scores
+                    };
+                    _context.StudentParticipations.Add(participation);
+
+                    // Начисляем баллы студенту
+                    var student = _context.Students.FirstOrDefault(s => s.StudentID == request.StudentID);
+                    if (student != null)
+                        student.Scores = (student.Scores ?? 0) + scores;
+
+                    _context.ParticipationRequests.Remove(request);
+                    _context.SaveChanges();
+
+                    // Добавляем оповещение
+                    AddNotification(request.StudentID, request.EventID, "Заявка принята",
+                        $"Ваша заявка на мероприятие принята! Вам начислено {scores} баллов.");
+
+                    return true;
+                }
+                return false;
+            }
+            catch { return false; }
+        }
+
+        // Отклонить заявку
+        public bool RejectRequest(int requestId)
+        {
+            try
+            {
+                var request = _context.ParticipationRequests.FirstOrDefault(r => r.RequestID == requestId);
+                if (request != null)
+                {
+                    _context.ParticipationRequests.Remove(request);
+                    _context.SaveChanges();
+
+                    AddNotification(request.StudentID, request.EventID, "Заявка отклонена",
+                        "Ваша заявка на мероприятие была отклонена.");
+
+                    return true;
+                }
+                return false;
+            }
+            catch { return false; }
+        }
+
+        // Добавить мероприятие
+        public bool AddEvent(Event newEvent)
+        {
+            try
+            {
+                _context.Events.Add(newEvent);
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+
+        // Обновить мероприятие
+        public bool UpdateEvent(Event updatedEvent)
+        {
+            try
+            {
+                var ev = _context.Events.FirstOrDefault(e => e.EventID == updatedEvent.EventID);
+                if (ev != null)
+                {
+                    ev.Name = updatedEvent.Name;
+                    ev.EventDate = updatedEvent.EventDate;
+                    ev.EventTime = updatedEvent.EventTime;
+                    ev.Place = updatedEvent.Place;
+                    ev.Scores = updatedEvent.Scores;
+                    ev.ExpectedStudentsAmount = updatedEvent.ExpectedStudentsAmount;
+
+                    _context.SaveChanges();
+
+                    // Оповещаем всех записанных студентов
+                    NotifyEventChanged(ev.EventID, ev.Name);
+
+                    return true;
+                }
+                return false;
+            }
+            catch { return false; }
+        }
+
+        // Удалить мероприятие
+        public bool DeleteEvent(int eventId)
+        {
+            try
+            {
+                var ev = _context.Events.FirstOrDefault(e => e.EventID == eventId);
+                if (ev != null)
+                {
+                    _context.Events.Remove(ev);
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch { return false; }
+        }
+
+        // Оповестить студентов об изменении мероприятия
+        private void NotifyEventChanged(int eventId, string eventName)
+        {
+            var participants = _context.StudentParticipations
+                .Where(p => p.EventID == eventId)
+                .Select(p => p.StudentID)
+                .ToList();
+
+            var requesters = _context.ParticipationRequests
+                .Where(r => r.EventID == eventId)
+                .Select(r => r.StudentID)
+                .ToList();
+
+            var allStudents = participants.Union(requesters).Distinct();
+
+            foreach (var studentId in allStudents)
+            {
+                AddNotification(studentId, eventId, "Изменение в мероприятии",
+                    $"Информация о мероприятии '{eventName}' была изменена. Проверьте актуальные данные.");
+            }
+        }
+
+        // Добавить оповещение
+        public void AddNotification(int studentId, int? eventId, string title, string message)
+        {
+            var notification = new Notification
+            {
+                StudentID = studentId,
+                EventID = eventId,
+                Title = title,
+                Message = message,
+                IsRead = false,
+                CreatedDate = DateTime.Now
+            };
+            _context.Notifications.Add(notification);
+            _context.SaveChanges();
+        }
+
+        // Получить оповещения студента
+        public List<Notification> GetStudentNotifications(int studentId)
+        {
+            return _context.Notifications
+                .Where(n => n.StudentID == studentId)
+                .OrderByDescending(n => n.CreatedDate)
+                .ToList();
+        }
+
+        // Отметить оповещение как прочитанное
+        public void MarkNotificationAsRead(int notificationId)
+        {
+            var notif = _context.Notifications.FirstOrDefault(n => n.NotificationID == notificationId);
+            if (notif != null)
+            {
+                notif.IsRead = true;
+                _context.SaveChanges();
+            }
+        }
+
+        // Обновить информацию о направлении (для руководителя)
+        public bool UpdateDirectionInfo(int directionId, string name, string note)
+        {
+            try
+            {
+                var direction = _context.Directions.FirstOrDefault(d => d.DirectionID == directionId);
+                if (direction != null)
+                {
+                    direction.Name = name;
+                    direction.Note = note;
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch { return false; }
+        }
+
+        // Добавить фото мероприятия
+        public bool AddEventPhoto(int eventId, string photoLink, string note)
+        {
+            try
+            {
+                var photo = new EventPhoto
+                {
+                    EventID = eventId,
+                    PhotoLink = photoLink,
+                    Note = note,
+                    UploadDate = DateTime.Now
+                };
+                _context.EventPhotos.Add(photo);
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+
+        // Получить все учебные периоды
+        public List<StudyPeriod> GetStudyPeriods()
+        {
+            return _context.StudyPeriods.ToList();
+        }
+
+        // Получить направления, которыми руководит студент
+        public List<Direction> GetStudentDirections(int studentId)
+        {
+            try
+            {
+                // Получаем ID направлений, где студент является руководителем
+                var directionIds = _context.Supervisors
+                    .Where(s => s.StudentID == studentId)
+                    .Select(s => s.DirectionID)
+                    .ToList();
+
+                return _context.Directions
+                    .Where(d => directionIds.Contains(d.DirectionID))
+                    .ToList();
+            }
+            catch
+            {
+                return new List<Direction>();
+            }
+        }
+
+        // Получить все заявки на мероприятия руководителя
+        public List<ParticipationRequest> GetRequestsBySupervisor(int studentId)
+        {
+            try
+            {
+                // Получаем мероприятия руководителя
+                var events = GetEventsBySupervisor(studentId);
+                var eventIds = events.Select(e => e.EventID).ToList();
+
+                return _context.ParticipationRequests
+                    .Where(r => eventIds.Contains(r.EventID))
+                    .Include(r => r.Student)
+                    .OrderByDescending(r => r.RequestDate)
+                    .ToList();
+            }
+            catch
+            {
+                return new List<ParticipationRequest>();
+            }
+        }
+
+        // Получить студента с полными данными
+        public Student GetStudentWithDetails(int studentId)
+        {
+            return _context.Students
+                .FirstOrDefault(s => s.StudentID == studentId);
+        }
+
+        // Получить мероприятие по ID
+        public Event GetEventById(int eventId)
+        {
+            return _context.Events.FirstOrDefault(e => e.EventID == eventId);
+        }
+
+        // Получить все направления (уже есть, но проверим)
+        public List<Direction> GetAllDirections()
+        {
+            return _context.Directions.ToList();
         }
     }
 }

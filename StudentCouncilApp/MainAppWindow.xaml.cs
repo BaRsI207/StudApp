@@ -1,5 +1,6 @@
 ﻿using StudentCouncilApp.Data;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,6 +18,14 @@ namespace StudentCouncilApp
             _currentStudentId = studentId;
             _db = db;
 
+            // Проверяем роль студента
+            var student = _db.GetStudentById(studentId);
+            if (student.RoleID == 2) // 2 - руководитель
+            {
+                btnSupervisor.Visibility = Visibility.Visible;
+                btnSupervisor.Click += (s, e) => LoadSupervisorPanel();
+            }
+
             // Подписываемся на кнопки меню
             btnLogout.Click += (s, e) => Logout();
             btnHome.Click += (s, e) => LoadHome();
@@ -24,6 +33,7 @@ namespace StudentCouncilApp
             btnEvents.Click += (s, e) => LoadEvents();
             btnRating.Click += (s, e) => LoadRating();
             btnProfile.Click += (s, e) => LoadProfile();
+            btnNotifications.Click += (s, e) => ShowNotifications();
 
             // Загружаем главную по умолчанию
             LoadHome();
@@ -70,6 +80,38 @@ namespace StudentCouncilApp
         public void SwitchToRating()
         {
             LoadRating();
+        }
+
+        private void LoadSupervisorPanel()
+        {
+            _currentPage = new SupervisorPanel(_currentStudentId, _db);
+            ContentArea.Content = _currentPage;
+        }
+
+        private void ShowNotifications()
+        {
+            var notifications = _db.GetStudentNotifications(_currentStudentId);
+
+            // Исправлено: проверяем IsRead == true вместо !IsRead
+            var unreadCount = notifications.Count(n => n.IsRead == false || n.IsRead == null);
+
+            string message = $"📬 Уведомления ({unreadCount} новых):\n\n";
+
+            foreach (var notif in notifications.Take(10))
+            {
+                message += $"📌 {notif.Title}\n   {notif.Message}\n   📅 {notif.CreatedDate:dd.MM.yyyy HH:mm}\n\n";
+            }
+
+            if (!notifications.Any())
+                message = "Нет уведомлений";
+
+            MessageBox.Show(message, "Уведомления", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            // Отмечаем все как прочитанные - исправлено
+            foreach (var notif in notifications.Where(n => n.IsRead == false || n.IsRead == null))
+            {
+                _db.MarkNotificationAsRead(notif.NotificationID);
+            }
         }
     }
 }

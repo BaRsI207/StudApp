@@ -40,5 +40,6 @@ namespace StudentCouncilApp
         public virtual DbSet<StudyPeriod> StudyPeriods { get; set; }
         public virtual DbSet<Supervisor> Supervisors { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
     }
 }
